@@ -11,7 +11,7 @@
     "require": {
         "php": ">=5.4.0",
         "abuseio/parser-common": "dev-master"
-    }
+    },
     "autoload": {
       "psr-4": {
         "AbuseIO\\Parser\\Abusehub": "src/"

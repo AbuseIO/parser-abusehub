@@ -13,7 +13,8 @@
         "abuseio/parser-common": "dev-master"
     },
     "autoload": {
-      "psr-4": {
-        "AbuseIO\\Parser\\Abusehub": "src/"
-    },
+        "psr-4": {
+            "AbuseIO\\Parser\\Abusehub\\": "src/"
+        }
+    }
 }

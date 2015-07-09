@@ -2,8 +2,18 @@
     "name": "abuseio/parser-abusehub",
     "description": "Parser addon for handling notifications from abusehub/abuseix",
     "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Mark Stunnenberg",
+            "email": "mark@e-rave.nl"
+        }
+    ],
     "require": {
         "php": ">=5.4.0",
         "abuseio/parser-common": "dev-master"
     }
+    "autoload": {
+      "psr-4": {
+        "AbuseIO\\Parser\\Abusehub": "src/"
+    },
 }

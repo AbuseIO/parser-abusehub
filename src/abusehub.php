@@ -27,10 +27,12 @@ class Abusehub extends Parser
 
     public function parse()
     {
-        Log::info(get_class($this). ': Received message from: '.
+        Log::info(
+            get_class($this). ': Received message from: '.
             $this->parsedMail->getHeader('from') . " with subject: '" .
             $this->parsedMail->getHeader('subject') . "' arrived at parser: " .
-            $this->config['parser']['name']);
+            $this->config['parser']['name']
+        );
 
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted csv, skip all others
@@ -59,7 +61,9 @@ class Abusehub extends Parser
 
                 if (!isset($this->config['parser']['feeds'][$feed])) {
                     $filesystem->deleteDirectory($tempPath);
-                    return $this->failed("Detected feed '${feed}' is unknown. No sense in trying to parse.");
+                    return $this->failed(
+                        "Detected feed '${feed}' is unknown. No sense in trying to parse."
+                    );
                 } else {
                     $feedConfig = $this->config['parser']['feeds'][$feed];
                 }
@@ -67,16 +71,20 @@ class Abusehub extends Parser
                 // Only parse enabled feeds
                 if ($feedConfig['enabled'] !== true) {
                     $filesystem->deleteDirectory($tempPath);
-                    return $this->failed("Detected feed '${feed}' has been disabled by configuration.");
+                    return $this->failed(
+                        "Detected feed '${feed}' has been disabled by configuration."
+                    );
 
                 }
 
                 // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.
-                $csv_colums = array_filter(explode(' ', $feedConfig['fields']));
+                $csv_colums = array_filter($feedConfig['fields']);
                 if (count($csv_colums) > 0) {
                     foreach ($csv_colums as $column) {
                         if (!isset($row[$column])) {
-                            return $this->failed("Required field ${column} is missing in the CSV or config is incorrect.");
+                            return $this->failed(
+                                "Required field ${column} is missing in the CSV or config is incorrect."
+                            );
                         } else {
                             $infoBlob[$column] = $row[$column];
                         }
@@ -94,7 +102,9 @@ class Abusehub extends Parser
 
                 foreach ($requiredColumns as $column) {
                     if (!isset($row[$column])) {
-                        return $this->failed("Required field ${column} is missing in the CSV or config is incorrect.");
+                        return $this->failed(
+                            "Required field ${column} is missing in the CSV or config is incorrect."
+                        );
                     }
                 }
 

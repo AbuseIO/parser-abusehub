@@ -34,6 +34,8 @@ class Abusehub extends Parser
             $this->config['parser']['name']
         );
 
+        $events = [ ];
+
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted csv, skip all others
             if (!preg_match($this->config['parser']['report_file'], $attachment->filename)) {

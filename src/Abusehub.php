@@ -111,8 +111,8 @@ class Abusehub extends Parser
                 $event = [
                     'source'        => $this->config['parser']['name'],
                     'ip'            => $row['src_ip'],
-                    'domain'        => '',
-                    'uri'           => '',
+                    //'domain'        => '', dont leave a empty var
+                    //'uri'           => '', dont leave a empty var
                     'class'         => $feedConfig['class'],
                     'type'          => $feedConfig['type'],
                     'timestamp'     => strtotime($row['event_date'] .' '. $row['event_time']),

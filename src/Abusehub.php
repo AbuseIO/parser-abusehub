@@ -2,7 +2,6 @@
 
 namespace AbuseIO\Parsers;
 
-use AbuseIO\Parsers\Parser;
 use Ddeboer\DataImport\Reader;
 use Ddeboer\DataImport\Writer;
 use Ddeboer\DataImport\Filter;
@@ -22,7 +21,6 @@ class Abusehub extends Parser
         $this->config = $config;
         $this->parsedMail = $parsedMail;
         $this->arfMail = $arfMail;
-
     }
 
     public function parse()

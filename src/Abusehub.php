@@ -32,7 +32,7 @@ class Abusehub extends Parser
             $this->config['parser']['name']
         );
 
-        $events = [ ];
+        $events = [];
 
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted csv, skip all others
@@ -59,13 +59,13 @@ class Abusehub extends Parser
                 // Only parse known feeds
                 $feed = $row['report_type'];
 
-                if (!isset($this->config['parser']['feeds'][$feed])) {
+                if (!isset($this->config['feeds'][$feed])) {
                     $filesystem->deleteDirectory($tempPath);
                     return $this->failed(
                         "Detected feed '${feed}' is unknown. No sense in trying to parse."
                     );
                 } else {
-                    $feedConfig = $this->config['parser']['feeds'][$feed];
+                    $feedConfig = $this->config['feeds'][$feed];
                 }
 
                 // Only parse enabled feeds
@@ -74,7 +74,6 @@ class Abusehub extends Parser
                     return $this->failed(
                         "Detected feed '${feed}' has been disabled by configuration."
                     );
-
                 }
 
                 // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.
@@ -111,8 +110,7 @@ class Abusehub extends Parser
                 $event = [
                     'source'        => $this->config['parser']['name'],
                     'ip'            => $row['src_ip'],
-                    'domain'        => '',
-                    'uri'           => '',
+                    'domain'        => false,
                     'class'         => $feedConfig['class'],
                     'type'          => $feedConfig['type'],
                     'timestamp'     => strtotime($row['event_date'] .' '. $row['event_time']),
@@ -120,7 +118,6 @@ class Abusehub extends Parser
                 ];
 
                 $events[] = $event;
-
             }
         }
 

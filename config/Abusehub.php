@@ -2,7 +2,7 @@
 
 return [
     'parser' => [
-        'name'          => 'AbuseHub',
+        'name'          => 'Abusehub',
         'enabled'       => true,
         'report_file'   => '/^abusehubcsv\-.*\.csv/i',
         'sender_map'    => [
@@ -15,7 +15,7 @@ return [
 
     'feeds' => [
         'Shadowserver Sinkhole HTTP Drone' => [
-            'class'     => 'Shadowserver Sinkhole HTTP Drone',
+            'class'     => 'Botnet infection',
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
@@ -24,7 +24,7 @@ return [
         ],
 
         'Shadowserver Botnet Drone' => [
-            'class'     => 'Shadowserver Botnet Drone',
+            'class'     => 'Botnet infection',
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
@@ -33,7 +33,7 @@ return [
         ],
 
         'Shadowserver Compromised Website' => [
-            'class'     => 'Shadowserver Compromised Website',
+            'class'     => 'Compromised website',
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
@@ -42,7 +42,7 @@ return [
         ],
 
         'Shadowserver Microsoft Sinkhole HTTP Drone' => [
-            'class'     => 'Shadowserver Microsoft Sinkhole HTTP Drone',
+            'class'     => 'Botnet infection',
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [

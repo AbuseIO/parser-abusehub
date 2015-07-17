@@ -15,28 +15,34 @@ class Abusehub extends Parser
     public $parsedMail;
     public $arfMail;
 
-    public function __construct($parsedMail, $arfMail, $config = false)
+    /**
+     * Create a new Abusehub instance
+     */
+    public function __construct($parsedMail, $arfMail)
     {
-        $this->configFile = __DIR__ . '/../config/' . basename(__FILE__);
-        $this->config = $config;
         $this->parsedMail = $parsedMail;
         $this->arfMail = $arfMail;
     }
 
+    /**
+     * Parse attachments
+     * @return Array    Returns array with failed or success data
+     *                  (See parser-common/src/Parser.php) for more info.
+     */
     public function parse()
     {
         Log::info(
             get_class($this). ': Received message from: '.
             $this->parsedMail->getHeader('from') . " with subject: '" .
             $this->parsedMail->getHeader('subject') . "' arrived at parser: " .
-            $this->config['parser']['name']
+            config('Abusehub.parser.name')
         );
 
-        $events = [];
+        $events = [ ];
 
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted csv, skip all others
-            if (!preg_match($this->config['parser']['report_file'], $attachment->filename)) {
+            if (!preg_match(config('Abusehub.parser.report_file'), $attachment->filename)) {
                 continue;
             }
 
@@ -54,30 +60,29 @@ class Abusehub extends Parser
             $csvReader->setHeaderRowNumber(0);
 
             foreach ($csvReader as $row) {
-                $infoBlob = [];
+                $infoBlob = [ ];
 
                 // Only parse known feeds
-                $feed = $row['report_type'];
+                $feedName = $row['report_type'];
 
-                if (!isset($this->config['feeds'][$feed])) {
+                // If this type of feed does not exist, throw error
+                if (empty(config("Abusehub.feeds.{$feedName}"))) {
                     $filesystem->deleteDirectory($tempPath);
                     return $this->failed(
-                        "Detected feed '${feed}' is unknown. No sense in trying to parse."
+                        "Detected feed '{$feedName}' is unknown."
                     );
-                } else {
-                    $feedConfig = $this->config['feeds'][$feed];
                 }
 
                 // Only parse enabled feeds
-                if ($feedConfig['enabled'] !== true) {
+                if (config("Abusehub.feeds.{$feedName}.enabled") !== true) {
                     $filesystem->deleteDirectory($tempPath);
                     return $this->failed(
-                        "Detected feed '${feed}' has been disabled by configuration."
+                        "Detected feed '{$feedName}' has been disabled by configuration."
                     );
                 }
 
                 // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.
-                $csv_colums = array_filter($feedConfig['fields']);
+                $csv_colums = array_filter(config("Abusehub.feeds.{$feedName}.fields"));
                 if (count($csv_colums) > 0) {
                     foreach ($csv_colums as $column) {
                         if (!isset($row[$column])) {
@@ -108,12 +113,12 @@ class Abusehub extends Parser
                 }
 
                 $event = [
-                    'source'        => $this->config['parser']['name'],
+                    'source'        => config('Abusehub.parser.name'),
                     'ip'            => $row['src_ip'],
                     'domain'        => false,
                     'uri'           => false,
-                    'class'         => $feedConfig['class'],
-                    'type'          => $feedConfig['type'],
+                    'class'         => config("Abusehub.feeds.{$feedName}.class"),
+                    'type'          => config("Abusehub.feeds.{$feedName}.type"),
                     'timestamp'     => strtotime($row['event_date'] .' '. $row['event_time']),
                     'information'   => json_encode($infoBlob),
                 ];

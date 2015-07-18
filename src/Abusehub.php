@@ -76,9 +76,7 @@ class Abusehub extends Parser
                 // Only parse enabled feeds
                 if (config("Abusehub.feeds.{$feedName}.enabled") !== true) {
                     $filesystem->deleteDirectory($tempPath);
-                    return $this->failed(
-                        "Detected feed '{$feedName}' has been disabled by configuration."
-                    );
+                    continue;
                 }
 
                 // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.

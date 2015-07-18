@@ -73,7 +73,9 @@ class Abusehub extends Parser
                     );
                 }
 
-                // Only parse enabled feeds
+                // If the feed is disabled, then continue on to the next feed or attachment
+                // its not a 'fail' in the sense we should start alerting as it was disabled
+                // by design or user configuration
                 if (config("Abusehub.feeds.{$feedName}.enabled") !== true) {
                     $filesystem->deleteDirectory($tempPath);
                     continue;

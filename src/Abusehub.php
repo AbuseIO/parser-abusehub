@@ -9,6 +9,7 @@ use Illuminate\Filesystem\Filesystem;
 use SplFileObject;
 use Uuid;
 use Log;
+use ReflectionClass;
 
 class Abusehub extends Parser
 {
@@ -31,18 +32,22 @@ class Abusehub extends Parser
      */
     public function parse()
     {
+        // Generalize the local config based on the parser class name.
+        $reflect = new ReflectionClass($this);
+        $configBase = 'parsers.' . $reflect->getShortName();
+
         Log::info(
             get_class($this). ': Received message from: '.
             $this->parsedMail->getHeader('from') . " with subject: '" .
             $this->parsedMail->getHeader('subject') . "' arrived at parser: " .
-            config('parsers.Abusehub.parser.name')
+            config("{$configBase}.parser.name")
         );
 
         $events = [ ];
 
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted csv, skip all others
-            if (!preg_match(config('parsers.Abusehub.parser.report_file'), $attachment->filename)) {
+            if (!preg_match(config("{$configBase}.parser.report_file"), $attachment->filename)) {
                 continue;
             }
 
@@ -66,7 +71,7 @@ class Abusehub extends Parser
                 $feedName = $row['report_type'];
 
                 // If this type of feed does not exist, throw error
-                if (empty(config("parsers.Abusehub.feeds.{$feedName}"))) {
+                if (empty(config("{$configBase}.feeds.{$feedName}"))) {
                     $filesystem->deleteDirectory($tempPath);
                     return $this->failed(
                         "Detected feed '{$feedName}' is unknown."
@@ -76,12 +81,12 @@ class Abusehub extends Parser
                 // If the feed is disabled, then continue on to the next feed or attachment
                 // its not a 'fail' in the sense we should start alerting as it was disabled
                 // by design or user configuration
-                if (config("parsers.Abusehub.feeds.{$feedName}.enabled") !== true) {
+                if (config("{$configBase}.feeds.{$feedName}.enabled") !== true) {
                     continue;
                 }
 
                 // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.
-                $csv_colums = array_filter(config("parsers.Abusehub.feeds.{$feedName}.fields"));
+                $csv_colums = array_filter(config("{$configBase}.feeds.{$feedName}.fields"));
                 if (count($csv_colums) > 0) {
                     foreach ($csv_colums as $column) {
                         if (!isset($row[$column])) {
@@ -112,21 +117,22 @@ class Abusehub extends Parser
                 }
 
                 $event = [
-                    'source'        => config('parsers.Abusehub.parser.name'),
+                    'source'        => config("{$configBase}.parser.name"),
                     'ip'            => $row['src_ip'],
                     'domain'        => false,
                     'uri'           => false,
-                    'class'         => config("parsers.Abusehub.feeds.{$feedName}.class"),
-                    'type'          => config("parsers.Abusehub.feeds.{$feedName}.type"),
+                    'class'         => config("{$configBase}.feeds.{$feedName}.class"),
+                    'type'          => config("{$configBase}.feeds.{$feedName}.type"),
                     'timestamp'     => strtotime($row['event_date'] .' '. $row['event_time']),
                     'information'   => json_encode($infoBlob),
                 ];
 
                 $events[] = $event;
             }
+
+            $filesystem->deleteDirectory($tempPath);
         }
 
-        $filesystem->deleteDirectory($tempPath);
         return $this->success($events);
     }
 }

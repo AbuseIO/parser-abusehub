@@ -126,6 +126,7 @@ class Abusehub extends Parser
             }
         }
 
+        $filesystem->deleteDirectory($tempPath);
         return $this->success($events);
     }
 }

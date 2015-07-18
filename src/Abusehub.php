@@ -35,14 +35,14 @@ class Abusehub extends Parser
             get_class($this). ': Received message from: '.
             $this->parsedMail->getHeader('from') . " with subject: '" .
             $this->parsedMail->getHeader('subject') . "' arrived at parser: " .
-            config('Abusehub.parser.name')
+            config('parsers.Abusehub.parser.name')
         );
 
         $events = [ ];
 
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted csv, skip all others
-            if (!preg_match(config('Abusehub.parser.report_file'), $attachment->filename)) {
+            if (!preg_match(config('parsers.Abusehub.parser.report_file'), $attachment->filename)) {
                 continue;
             }
 
@@ -66,7 +66,7 @@ class Abusehub extends Parser
                 $feedName = $row['report_type'];
 
                 // If this type of feed does not exist, throw error
-                if (empty(config("Abusehub.feeds.{$feedName}"))) {
+                if (empty(config("parsers.Abusehub.feeds.{$feedName}"))) {
                     $filesystem->deleteDirectory($tempPath);
                     return $this->failed(
                         "Detected feed '{$feedName}' is unknown."
@@ -76,12 +76,12 @@ class Abusehub extends Parser
                 // If the feed is disabled, then continue on to the next feed or attachment
                 // its not a 'fail' in the sense we should start alerting as it was disabled
                 // by design or user configuration
-                if (config("Abusehub.feeds.{$feedName}.enabled") !== true) {
+                if (config("parsers.Abusehub.feeds.{$feedName}.enabled") !== true) {
                     continue;
                 }
 
                 // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.
-                $csv_colums = array_filter(config("Abusehub.feeds.{$feedName}.fields"));
+                $csv_colums = array_filter(config("parsers.Abusehub.feeds.{$feedName}.fields"));
                 if (count($csv_colums) > 0) {
                     foreach ($csv_colums as $column) {
                         if (!isset($row[$column])) {
@@ -112,12 +112,12 @@ class Abusehub extends Parser
                 }
 
                 $event = [
-                    'source'        => config('Abusehub.parser.name'),
+                    'source'        => config('parsers.Abusehub.parser.name'),
                     'ip'            => $row['src_ip'],
                     'domain'        => false,
                     'uri'           => false,
-                    'class'         => config("Abusehub.feeds.{$feedName}.class"),
-                    'type'          => config("Abusehub.feeds.{$feedName}.type"),
+                    'class'         => config("parsers.Abusehub.feeds.{$feedName}.class"),
+                    'type'          => config("parsers.Abusehub.feeds.{$feedName}.type"),
                     'timestamp'     => strtotime($row['event_date'] .' '. $row['event_time']),
                     'information'   => json_encode($infoBlob),
                 ];

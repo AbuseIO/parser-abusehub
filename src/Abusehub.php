@@ -77,7 +77,6 @@ class Abusehub extends Parser
                 // its not a 'fail' in the sense we should start alerting as it was disabled
                 // by design or user configuration
                 if (config("Abusehub.feeds.{$feedName}.enabled") !== true) {
-                    $filesystem->deleteDirectory($tempPath);
                     continue;
                 }
 

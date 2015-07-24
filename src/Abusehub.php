@@ -65,12 +65,15 @@ class Abusehub extends Parser
             $csvReader->setHeaderRowNumber(0);
 
             foreach ($csvReader as $row) {
-                $infoBlob = [ ];
 
-                // Only parse known feeds
+                if (empty($row['report_type'])) {
+                    return $this->failed(
+                        "Unabled to detect feed because of required field report_type is missing"
+                    );
+                }
+
                 $feedName = $row['report_type'];
 
-                // If this type of feed does not exist, throw error
                 if (empty(config("{$configBase}.feeds.{$feedName}"))) {
                     $filesystem->deleteDirectory($tempPath);
                     return $this->failed(
@@ -78,41 +81,18 @@ class Abusehub extends Parser
                     );
                 }
 
-                // If the feed is disabled, then continue on to the next feed or attachment
-                // its not a 'fail' in the sense we should start alerting as it was disabled
-                // by design or user configuration
                 if (config("{$configBase}.feeds.{$feedName}.enabled") !== true) {
                     continue;
                 }
 
-                // Fill the infoBlob. 'fields' in the feeds' config is empty, get all fields.
-                $csv_colums = array_filter(config("{$configBase}.feeds.{$feedName}.fields"));
-                if (count($csv_colums) > 0) {
-                    foreach ($csv_colums as $column) {
-                        if (!isset($row[$column])) {
+                $columns = array_filter(config("{$configBase}.feeds.{$feedName}.fields"));
+                if (count($columns) > 0) {
+                    foreach ($columns as $column) {
+                        if (!isset($fields[$column])) {
                             return $this->failed(
-                                "Required field ${column} is missing in the CSV or config is incorrect."
+                                "Required field ${column} is missing in the report or config is incorrect."
                             );
-                        } else {
-                            $infoBlob[$column] = $row[$column];
                         }
-                    }
-                } else {
-                    $infoBlob = $row;
-                }
-
-                // Basic required columns that reside in every CSV
-                $requiredColumns = [
-                    'src_ip',
-                    'event_date',
-                    'event_time',
-                ];
-
-                foreach ($requiredColumns as $column) {
-                    if (!isset($row[$column])) {
-                        return $this->failed(
-                            "Required field ${column} is missing in the CSV or config is incorrect."
-                        );
                     }
                 }
 
@@ -124,7 +104,7 @@ class Abusehub extends Parser
                     'class'         => config("{$configBase}.feeds.{$feedName}.class"),
                     'type'          => config("{$configBase}.feeds.{$feedName}.type"),
                     'timestamp'     => strtotime($row['event_date'] .' '. $row['event_time']),
-                    'information'   => json_encode($infoBlob),
+                    'information'   => json_encode($row),
                 ];
 
                 $events[] = $event;

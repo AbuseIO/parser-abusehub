@@ -19,7 +19,9 @@ return [
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
-                //
+                'src_ip',
+                'event_date',
+                'event_time',
             ],
         ],
 
@@ -28,7 +30,9 @@ return [
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
-                //
+                'src_ip',
+                'event_date',
+                'event_time',
             ],
         ],
 
@@ -37,7 +41,9 @@ return [
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
-                //
+                'src_ip',
+                'event_date',
+                'event_time',
             ],
         ],
 
@@ -46,7 +52,9 @@ return [
             'type'      => 'Abuse',
             'enabled'   => true,
             'fields'    => [
-                //
+                'src_ip',
+                'event_date',
+                'event_time',
             ],
         ],
     ],

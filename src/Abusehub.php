@@ -65,7 +65,6 @@ class Abusehub extends Parser
             $csvReader->setHeaderRowNumber(0);
 
             foreach ($csvReader as $row) {
-
                 if (empty($row['report_type'])) {
                     return $this->failed(
                         "Unabled to detect feed because of required field report_type is missing"
@@ -88,7 +87,7 @@ class Abusehub extends Parser
                 $columns = array_filter(config("{$configBase}.feeds.{$feedName}.fields"));
                 if (count($columns) > 0) {
                     foreach ($columns as $column) {
-                        if (!isset($fields[$column])) {
+                        if (!isset($row[$column])) {
                             return $this->failed(
                                 "Required field ${column} is missing in the report or config is incorrect."
                             );

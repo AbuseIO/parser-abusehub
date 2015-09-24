@@ -1,13 +1,26 @@
 {
     "name": "abuseio/parser-abusehub",
     "description": "Parser addon for handling notifications from abusehub/abuseix",
+    "version": "1.0.0-dev",
+    "keywords": ["laravel", "abuseio", "parser", "abusehub", "abuseix"],
+    "homepage": "http://abuse.io",
+    "type": "library",
     "license": "GPL-2.0",
     "authors": [
         {
             "name": "Mark Stunnenberg",
-            "email": "mark@e-rave.nl"
+            "email": "mark@e-rave.nl",
+            "homepage": "http://e-rave.nl",
+            "role": "Developer"
         }
     ],
+    "support": {
+        "email": "dev@abuse.io",
+        "issues": "https://github.com/AbuseIO/parser-abusehub/issues",
+        "irc": "irc://irc.freenode.net/abuseio",
+        "source": "https://github.com/AbuseIO/parser-abusehub",
+        "docs": "https://abuse.io/resources/documentation/"
+    },
     "require": {
         "php": ">=5.4.0",
         "abuseio/parser-common": "dev-master"

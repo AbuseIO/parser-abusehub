@@ -49,45 +49,55 @@ class Abusehub extends Parser
             }
 
             // Create temporary working environment for the parser ($this->tempPath, $this->fs)
-            $this->createWorkingDir();
+            if (!$this->createWorkingDir()) {
+                return $this->failed(
+                    "Unable to create working directory"
+                );
+            }
+
             file_put_contents($this->tempPath . $attachment->filename, $attachment->getContent());
 
-            $csvReader = new Reader\CsvReader(new SplFileObject($this->tempPath . $attachment->filename));
-            $csvReader->setHeaderRowNumber(0);
+            $csvReports = new Reader\CsvReader(new SplFileObject($this->tempPath . $attachment->filename));
+            $csvReports->setHeaderRowNumber(0);
 
-            foreach ($csvReader as $report) {
+            foreach ($csvReports as $report) {
                 if (empty($report['report_type'])) {
                     return $this->failed(
                         "Unabled to detect feed because of required field report_type is missing"
                     );
                 }
 
-                $feedName = $report['report_type'];
+                $this->feedName = $report['report_type'];
 
-                // If feed is known and enabled, validate data and save report
-                if ($this->isKnownFeed($feedName) && $this->isEnabledFeed($feedName)) {
-                    // Sanity checks (skip if required fields are unset)
-                    if ($this->hasRequiredFields($feedName, $report) === true) {
-                        $events[] = [
-                            'source'        => config("{$this->configBase}.parser.name"),
-                            'ip'            => $report['src_ip'],
-                            'domain'        => false,
-                            'uri'           => false,
-                            'class'         => config("{$this->configBase}.feeds.{$feedName}.class"),
-                            'type'          => config("{$this->configBase}.feeds.{$feedName}.type"),
-                            'timestamp'     => strtotime($report['event_date'] .' '. $report['event_time']),
-                            'information'   => json_encode($report),
-                        ];
-                    } else {
-                        return $this->failed(
-                            "Required field {$this->requiredField} is missing in the report or config is incorrect."
-                        );
-                    }
-                } else {
+                if (!$this->isKnownFeed()) {
                     return $this->failed(
-                        "Detected feed '{$feedName}' is unknown or disabled."
+                        "Detected feed {$this->feedName} is unknown."
                     );
                 }
+
+                if (!$this->isEnabledFeed()) {
+                    continue;
+                }
+
+                if (!$this->hasRequiredFields($report)) {
+                    return $this->failed(
+                        "Required field {$this->requiredField} is missing or the config is incorrect."
+                    );
+                }
+
+                $report = $this->applyFilters($report);
+
+                $events[] = [
+                    'source'        => config("{$this->configBase}.parser.name"),
+                    'ip'            => $report['src_ip'],
+                    'domain'        => false,
+                    'uri'           => false,
+                    'class'         => config("{$this->configBase}.feeds.{$this->feedName}.class"),
+                    'type'          => config("{$this->configBase}.feeds.{$this->feedName}.type"),
+                    'timestamp'     => strtotime($report['event_date'] .' '. $report['event_time']),
+                    'information'   => json_encode($report),
+                ];
+
             }
         }
 

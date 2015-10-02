@@ -4,8 +4,6 @@ namespace AbuseIO\Parsers;
 
 use Ddeboer\DataImport\Reader;
 use SplFileObject;
-use ReflectionClass;
-use Log;
 
 class Abusehub extends Parser
 {
@@ -15,7 +13,7 @@ class Abusehub extends Parser
     public function __construct($parsedMail, $arfMail)
     {
         // Call the parent constructor to initialize some basics
-        parent::__construct($parsedMail, $arfMail);
+        parent::__construct($parsedMail, $arfMail, $this);
     }
 
     /**
@@ -25,17 +23,6 @@ class Abusehub extends Parser
      */
     public function parse()
     {
-        // Generalize the local config based on the parser class name.
-        $reflect = new ReflectionClass($this);
-        $this->configBase = 'parsers.' . $reflect->getShortName();
-
-        Log::info(
-            get_class($this). ': Received message from: '.
-            $this->parsedMail->getHeader('from') . " with subject: '" .
-            $this->parsedMail->getHeader('subject') . "' arrived at parser: " .
-            config("{$this->configBase}.parser.name")
-        );
-
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted reports, skip all others
             if (preg_match(config("{$this->configBase}.parser.report_file"), $attachment->filename)) {

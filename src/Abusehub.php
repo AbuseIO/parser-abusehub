@@ -9,16 +9,13 @@ use Log;
 
 class Abusehub extends Parser
 {
-    public $parsedMail;
-    public $arfMail;
-
     /**
      * Create a new Abusehub instance
      */
     public function __construct($parsedMail, $arfMail)
     {
-        $this->parsedMail = $parsedMail;
-        $this->arfMail = $arfMail;
+        // Call the parent constructor to initialize some basics
+        parent::__construct($parsedMail, $arfMail);
     }
 
     /**
@@ -39,68 +36,48 @@ class Abusehub extends Parser
             config("{$this->configBase}.parser.name")
         );
 
-        // Define array where all events are going to be saved in.
-        $events = [ ];
-
         foreach ($this->parsedMail->getAttachments() as $attachment) {
-            // Only use the Abusehub formatted csv, skip all others
-            if (!preg_match(config("{$this->configBase}.parser.report_file"), $attachment->filename)) {
-                continue;
-            }
+            // Only use the Abusehub formatted reports, skip all others
+            if (preg_match(config("{$this->configBase}.parser.report_file"), $attachment->filename)) {
+                // Create temporary working environment for the parser ($this->tempPath, $this->fs)
+                $this->createWorkingDir();
+                file_put_contents($this->tempPath . $attachment->filename, $attachment->getContent());
 
-            // Create temporary working environment for the parser ($this->tempPath, $this->fs)
-            if (!$this->createWorkingDir()) {
-                return $this->failed(
-                    "Unable to create working directory"
-                );
-            }
+                $csvReader = new Reader\CsvReader(new SplFileObject($this->tempPath . $attachment->filename));
+                $csvReader->setHeaderRowNumber(0);
 
-            file_put_contents($this->tempPath . $attachment->filename, $attachment->getContent());
+                // Loop through all csv reports
+                foreach ($csvReader as $report) {
+                    if (!empty($report['report_type'])) {
+                        $this->feedName = $report['report_type'];
 
-            $csvReports = new Reader\CsvReader(new SplFileObject($this->tempPath . $attachment->filename));
-            $csvReports->setHeaderRowNumber(0);
+                        // If feed is known and enabled, validate data and save report
+                        if ($this->isKnownFeed() && $this->isEnabledFeed()) {
+                            // Sanity check
+                            if ($this->hasRequiredFields($report) === true) {
+                                // Event has all requirements met, filter and add!
+                                $report = $this->applyFilters($report);
 
-            foreach ($csvReports as $report) {
-                if (empty($report['report_type'])) {
-                    return $this->failed(
-                        "Unabled to detect feed because of required field report_type is missing"
-                    );
-                }
+                                $this->events[] = [
+                                    'source'        => config("{$this->configBase}.parser.name"),
+                                    'ip'            => $report['src_ip'],
+                                    'domain'        => false,
+                                    'uri'           => false,
+                                    'class'         => config("{$this->configBase}.feeds.{$this->feedName}.class"),
+                                    'type'          => config("{$this->configBase}.feeds.{$this->feedName}.type"),
+                                    'timestamp'     => strtotime($report['event_date'] .' '. $report['event_time']),
+                                    'information'   => json_encode($report),
+                                ];
+                            }
+                        }
+                    } else {
+                        // We cannot parse this report, since we haven't detected a report_type.
+                        $this->warningCount++;
+                    }
+                } // end foreach: loop through csv lines
+            } // end if: found report file to parse
+        } // end foreach: loop through attachments
 
-                $this->feedName = $report['report_type'];
-
-                if (!$this->isKnownFeed()) {
-                    return $this->failed(
-                        "Detected feed {$this->feedName} is unknown."
-                    );
-                }
-
-                if (!$this->isEnabledFeed()) {
-                    continue;
-                }
-
-                if (!$this->hasRequiredFields($report)) {
-                    return $this->failed(
-                        "Required field {$this->requiredField} is missing or the config is incorrect."
-                    );
-                }
-
-                $report = $this->applyFilters($report);
-
-                $events[] = [
-                    'source'        => config("{$this->configBase}.parser.name"),
-                    'ip'            => $report['src_ip'],
-                    'domain'        => false,
-                    'uri'           => false,
-                    'class'         => config("{$this->configBase}.feeds.{$this->feedName}.class"),
-                    'type'          => config("{$this->configBase}.feeds.{$this->feedName}.type"),
-                    'timestamp'     => strtotime($report['event_date'] .' '. $report['event_time']),
-                    'information'   => json_encode($report),
-                ];
-
-            }
-        }
-
-        return $this->success($events);
+        return $this->success();
     }
 }

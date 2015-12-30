@@ -5,10 +5,17 @@ namespace AbuseIO\Parsers;
 use Ddeboer\DataImport\Reader;
 use SplFileObject;
 
+/**
+ * Class Abusehub
+ * @package AbuseIO\Parsers
+ */
 class Abusehub extends Parser
 {
     /**
      * Create a new Abusehub instance
+     *
+     * @param \PhpMimeMailParser\Parser phpMimeParser object
+     * @param array $arfMail array with ARF detected results
      */
     public function __construct($parsedMail, $arfMail)
     {
@@ -18,7 +25,8 @@ class Abusehub extends Parser
 
     /**
      * Parse attachments
-     * @return Array    Returns array with failed or success data
+     *
+     * @return array    Returns array with failed or success data
      *                  (See parser-common/src/Parser.php) for more info.
      */
     public function parse()

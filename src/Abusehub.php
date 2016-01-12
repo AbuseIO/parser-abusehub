@@ -4,6 +4,7 @@ namespace AbuseIO\Parsers;
 
 use Ddeboer\DataImport\Reader;
 use SplFileObject;
+use AbuseIO\Models\Incident;
 
 /**
  * Class Abusehub
@@ -53,16 +54,18 @@ class Abusehub extends Parser
                                 // Event has all requirements met, filter and add!
                                 $report = $this->applyFilters($report);
 
-                                $this->events[] = [
-                                    'source'        => config("{$this->configBase}.parser.name"),
-                                    'ip'            => $report['src_ip'],
-                                    'domain'        => false,
-                                    'uri'           => false,
-                                    'class'         => config("{$this->configBase}.feeds.{$this->feedName}.class"),
-                                    'type'          => config("{$this->configBase}.feeds.{$this->feedName}.type"),
-                                    'timestamp'     => strtotime($report['event_date'] .' '. $report['event_time']),
-                                    'information'   => json_encode($report),
-                                ];
+                                $incident = new Incident();
+                                $incident->source      = config("{$this->configBase}.parser.name");
+                                $incident->source_id   = false;
+                                $incident->ip          = $report['src_ip'];
+                                $incident->domain      = false;
+                                $incident->uri         = false;
+                                $incident->class       = config("{$this->configBase}.feeds.{$this->feedName}.class");
+                                $incident->type        = config("{$this->configBase}.feeds.{$this->feedName}.type");
+                                $incident->timestamp   = strtotime($report['event_date'] .' '. $report['event_time']);
+                                $incident->information = json_encode($report);
+
+                                $this->events[] = $incident;
                             }
                         }
                     } else {

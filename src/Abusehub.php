@@ -51,7 +51,7 @@ class Abusehub extends Parser
                         if ($this->isKnownFeed() && $this->isEnabledFeed()) {
                             // Sanity check
                             if ($this->hasRequiredFields($report) === true) {
-                                // Event has all requirements met, filter and add!
+                                // incident has all requirements met, filter and add!
                                 $report = $this->applyFilters($report);
 
                                 $incident = new Incident();
@@ -65,7 +65,7 @@ class Abusehub extends Parser
                                 $incident->timestamp   = strtotime($report['event_date'] .' '. $report['event_time']);
                                 $incident->information = json_encode($report);
 
-                                $this->events[] = $incident;
+                                $this->incidents[] = $incident;
                             }
                         }
                     } else {

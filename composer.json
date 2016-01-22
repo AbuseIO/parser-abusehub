@@ -1,7 +1,7 @@
 {
     "name": "abuseio/parser-abusehub",
     "description": "Parser addon for handling notifications from abusehub/abuseix",
-    "version": "1.0.2-dev",
+    "version": "1.2.0",
     "keywords": ["laravel", "abuseio", "parser", "abusehub", "abuseix"],
     "homepage": "http://abuse.io",
     "type": "library",

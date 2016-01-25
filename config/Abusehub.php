@@ -16,7 +16,7 @@ return [
     'feeds' => [
         'Shadowserver Sinkhole HTTP Drone' => [
             'class'     => 'BOTNET_INFECTION',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -26,7 +26,7 @@ return [
         ],
         'Shadowserver Botnet Drone' => [
             'class'     => 'BOTNET_INFECTION',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -36,7 +36,7 @@ return [
         ],
         'Shadowserver Microsoft Sinkhole HTTP Drone' => [
             'class'     => 'BOTNET_INFECTION',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -46,7 +46,7 @@ return [
         ],
         'KPN ShadowServer Drone Report' => [
             'class'     => 'BOTNET_INFECTION',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -56,7 +56,7 @@ return [
         ],
         'Shadowserver Open Proxy' => [
             'class'     => 'OPEN_PROXY_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -66,7 +66,7 @@ return [
         ],
         'Shadowserver Botnet DDOS' => [
             'class'     => 'BOTNET_INFECTION',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -76,7 +76,7 @@ return [
         ],
         'Shadowserver Open DNS Resolvers' => [
             'class'     => 'OPEN_DNS_RESOLVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -86,7 +86,7 @@ return [
         ],
         'Shadowserver Command and Control' => [
             'class'     => 'BOTNET_CONTROLLER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -96,7 +96,7 @@ return [
         ],
         'Shadowserver Sandbox url' => [
             'class'     => 'SPAMTRAP',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -106,7 +106,7 @@ return [
         ],
         'Shadowserver Spam url' => [
             'class'     => 'SPAM',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -116,7 +116,7 @@ return [
         ],
         'Shadowserver Open SNMP' => [
             'class'     => 'OPEN_SNMP_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -126,7 +126,7 @@ return [
         ],
         'Shadowserver NTP Version' => [
             'class'     => 'OPEN_NTP_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -136,7 +136,7 @@ return [
         ],
         'Shadowserver Open NetBIOS' => [
             'class'     => 'OPEN_NETBIOS_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -146,7 +146,7 @@ return [
         ],
         'Shadowserver Open SSDP' => [
             'class'     => 'OPEN_SSDP_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -156,7 +156,7 @@ return [
         ],
         'Shadowserver Open CharGen' => [
             'class'     => 'OPEN_CHARGEN_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -166,7 +166,7 @@ return [
         ],
         'Shadowserver Open QOTD' => [
             'class'     => 'OPEN_QOTD_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -176,7 +176,7 @@ return [
         ],
         'Shadowserver NTP Version' => [
             'class'     => 'OPEN_NTP_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -186,7 +186,7 @@ return [
         ],
         'Shadowserver Compromised Website' => [
             'class'     => 'COMPROMISED_WEBSITE',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -196,7 +196,7 @@ return [
         ],
         'Shadowserver NTP Monitor' => [
             'class'     => 'OPEN_NTP_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -206,7 +206,7 @@ return [
         ],
         'Shadowserver IPMI' => [
             'class'     => 'OPEN_IMPI_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -216,7 +216,7 @@ return [
         ],
         'Shadowserver SSLv3/Poodle Vulnerable Servers' => [
             'class'     => 'SSLV3_VULNERABLE_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -226,7 +226,7 @@ return [
         ],
         'ShadowServer Vulnerable NAT-PMP Systems report' => [
             'class'     => 'OPEN_NATPMP_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -236,7 +236,7 @@ return [
         ],
         'ShadowServer Open Memcached Server Report' => [
             'class'     => 'OPEN_MEMCACHED_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -246,7 +246,7 @@ return [
         ],
         'ShadowServer Open Redis Servers Report' => [
             'class'     => 'OPEN_REDIS_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -256,7 +256,7 @@ return [
         ],
         'Shadowserver Open MS-SQL Server Resolution Service Report' => [
             'class'     => 'OPEN_MSSQL_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -266,7 +266,7 @@ return [
         ],
         'ShadowServer Open MongoDB Service Report' => [
             'class'     => 'OPEN_MONGODB_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -276,7 +276,7 @@ return [
         ],
         'ShadowServer SSL/Freak Vulnerable Servers report' => [
             'class'     => 'FREAK_VULNERABLE_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -286,7 +286,7 @@ return [
         ],
         'ShadowServer Open Elasticsearch Server Report' => [
             'class'     => 'OPEN_ELASTICSEARCH_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -296,7 +296,7 @@ return [
         ],
         'ACM' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -306,7 +306,7 @@ return [
         ],
         'ACM Possible Malware' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -316,7 +316,7 @@ return [
         ],
         'AOL FBL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -326,7 +326,7 @@ return [
         ],
         'CleanMX' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -336,7 +336,7 @@ return [
         ],
         'COX FBL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -346,7 +346,7 @@ return [
         ],
         'Google Safe Browsing' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -356,7 +356,7 @@ return [
         ],
         'Lotus FBL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -366,7 +366,7 @@ return [
         ],
         'Hotmail FBL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -376,7 +376,7 @@ return [
         ],
         'NCSC RAT Report' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -386,7 +386,7 @@ return [
         ],
         'NCSC Brobot URL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -396,7 +396,7 @@ return [
         ],
         'NCSC Ebury Infections' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -406,7 +406,7 @@ return [
         ],
         'NCSC Mongodb report' => [
             'class'     => 'OPEN_MONGODB_SERVER',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -416,7 +416,7 @@ return [
         ],
         'NCSC Cryptoware infections' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -426,7 +426,7 @@ return [
         ],
         'NCSC Mumblehard infections' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -436,7 +436,7 @@ return [
         ],
         'NCSC Mumblehartt' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -446,7 +446,7 @@ return [
         ],
         'Rackspace FBL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -456,7 +456,7 @@ return [
         ],
         'Spamhaus Bot Report' => [
             'class'     => 'BOTNET_INFECTION',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -466,7 +466,7 @@ return [
         ],
         'Team Cymru Malevolence Monitoring' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -476,7 +476,7 @@ return [
         ],
         'Terra FBL' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',
@@ -486,7 +486,7 @@ return [
         ],
         'TrendMicro' => [
             'class'     => 'DEFAULT',
-            'type'      => 'Abuse',
+            'type'      => 'ABUSE',
             'enabled'   => true,
             'fields'    => [
                 'src_ip',

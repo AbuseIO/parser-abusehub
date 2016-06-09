@@ -494,6 +494,36 @@ return [
                 'event_time',
             ],
         ],
+        'ShadowServer Open TFTP Servers Report' => [
+            'class'     => 'OPEN_TFTP_SERVER',
+            'type'      => 'ABUSE',
+            'enabled'   => true,
+            'fields'    => [
+                'src_ip',
+                'event_date',
+                'event_time',
+            ],
+        ],
+        'ShadowServer Open Portmapper Scan Report' => [
+            'class'     => 'OPEN_PORTMAP_SERVER',
+            'type'      => 'ABUSE',
+            'enabled'   => true,
+            'fields'    => [
+                'src_ip',
+                'event_date',
+                'event_time',
+            ],
+        ],
+        'ShadowServer Open mDNS Servers Report' => [
+            'class'     => 'OPEN_MDNS_SERVICE',
+            'type'      => 'ABUSE',
+            'enabled'   => true,
+            'fields'    => [
+                'src_ip',
+                'event_date',
+                'event_time',
+            ],
+        ],
 
     ],
 ];

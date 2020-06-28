@@ -34,12 +34,12 @@ class Abusehub extends Parser
     {
         foreach ($this->parsedMail->getAttachments() as $attachment) {
             // Only use the Abusehub formatted reports, skip all others
-            if (preg_match(config("{$this->configBase}.parser.report_file"), $attachment->filename)) {
+            if (preg_match(config("{$this->configBase}.parser.report_file"), $attachment->getFilename())) {
                 // Create temporary working environment for the parser ($this->tempPath, $this->fs)
                 $this->createWorkingDir();
-                file_put_contents($this->tempPath . $attachment->filename, $attachment->getContent());
+                file_put_contents($this->tempPath . $attachment->getFilename(), $attachment->getContent());
 
-                $csvReader = new Reader\CsvReader(new SplFileObject($this->tempPath . $attachment->filename));
+                $csvReader = new Reader\CsvReader(new SplFileObject($this->tempPath . $attachment->getFilename()));
                 $csvReader->setHeaderRowNumber(0);
 
                 // Loop through all csv reports
